@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isobar — Live Atmospheric Readout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="code.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Live atmospheric readout</div>
+  <div class="hero">
+    <h1>Know the sky<br>before you <span>step outside</span>.</h1>
+    <p>Search any city for current conditions, an hour-by-hour outlook, and the seven-day pattern — read straight off the instruments.</p>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="cityInput" placeholder="Enter a city — e.g. Lisbon, Austin, Seoul">
+    <button id="searchBtn">Search</button>
+  </div>
+  <div class="locate-link" id="statusLine">&nbsp;</div>
+
+  <!-- Empty state -->
+  <div class="state-panel" id="emptyState">
+    <div class="glyph">◎</div>
+    <p>NO STATION SELECTED — SEARCH A CITY TO BEGIN READOUT</p>
+  </div>
+
+  <!-- Loading state -->
+  <div class="state-panel" id="loading" style="display:none;">
+    <div class="spinner"></div>
+    <p>CALIBRATING INSTRUMENTS…</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="state-panel error-panel" id="errorBox" style="display:none;">
+    <div class="glyph">▲</div>
+    <p id="errorText">STATION NOT FOUND</p>
+  </div>
+
+  <!-- Main readout -->
+  <div class="readout" id="readout">
+
+    <div class="readout-top">
+      <div>
+        <div class="place" id="cityName">—</div>
+        <div class="place-time" id="localTime">—</div>
+        <div class="place-desc" id="description">—</div>
+      </div>
+
+      <div class="dial-wrap">
+        <svg viewBox="0 0 170 170">
+          <circle cx="85" cy="85" r="76" fill="none" stroke="#26314a" stroke-width="2"/>
+          <path d="M 20 130 A 76 76 0 1 1 150 130" fill="none" stroke="#1a2440" stroke-width="10" stroke-linecap="round"/>
+          <path id="dialFill" d="M 20 130 A 76 76 0 1 1 150 130" fill="none" stroke="#f5a623" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 300"/>
+          <line id="dialNeedle" class="dial-needle" x1="85" y1="85" x2="85" y2="24" stroke="#e8ecf4" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="85" cy="85" r="5" fill="#e8ecf4"/>
+        </svg>
+        <div class="dial-temp">
+          <div class="num"><span id="temp">--</span><sup>°C</sup></div>
+          <div class="lbl">current</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-item">
+        <span class="label">Feels like</span>
+        <span class="value" id="feelsLike">--°</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Humidity</span>
+        <span class="value teal" id="humidity">--%</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Wind</span>
+        <span class="value"><span class="compass" id="windArrow">↑</span><span id="wind">-- km/h</span></span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Pressure</span>
+        <span class="value" id="pressure">-- hPa</span>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h3>Next 24 hours</h3>
+      <span id="hourlyMeta">HOURLY</span>
+    </div>
+    <div class="hourly-scroll" id="hourlyScroll"></div>
+
+    <div class="section-head">
+      <h3>Seven-day pattern</h3>
+      <span>MIN / MAX °C</span>
+    </div>
+    <div id="dailyList"></div>
+
+    <div class="section-head">
+      <h3>Sun</h3>
+      <span id="daylightMeta">—</span>
+    </div>
+    <div class="sun-panel">
+      <div class="sun-arc-wrap">
+        <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+          <path d="M 10 80 Q 150 -20 290 80" fill="none" stroke="#26314a" stroke-width="2" stroke-dasharray="4 6"/>
+          <circle id="sunDot" cx="10" cy="80" r="6" fill="#f5a623"/>
+        </svg>
+      </div>
+      <div class="sun-times">
+        <div>Sunrise <span class="val" id="sunrise">--:--</span></div>
+        <div>Sunset <span class="val" id="sunset">--:--</span></div>
+      </div>
+    </div>
+
+    <footer>
+      <span>DATA: OPEN-METEO</span>
+      <span id="coordsFooter">—</span>
+    </footer>
+  </div>
+
+</div>
+
+<script src="code.js"></script>
+</body>
+</html>
